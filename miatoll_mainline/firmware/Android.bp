@@ -1,0 +1,138 @@
+//
+// SPDX-FileCopyrightText: The LineageOS Project
+// SPDX-License-Identifier: Apache-2.0
+//
+
+install_symlink {
+    name: "symlink_firmware_miatoll",
+    vendor: true,
+    installed_location: "firmware/qcom/sm7125/miatoll",
+    symlink_target: "/odm/firmware/qcom/sm7125/miatoll",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_modem_pr",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/modem_pr",
+    symlink_target: "/vendor/firmware_mnt/image/modem_pr",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_adspr.jsn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/adspr.jsn",
+    symlink_target: "/vendor/firmware_mnt/image/adspr.jsn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_adsps.jsn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/adsps.jsn",
+    symlink_target: "/vendor/firmware_mnt/image/adsps.jsn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_adspua.jsn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/adspua.jsn",
+    symlink_target: "/vendor/firmware_mnt/image/adspua.jsn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_cdspr.jsn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/cdspr.jsn",
+    symlink_target: "/vendor/firmware_mnt/image/cdspr.jsn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_modemr.jsn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/modemr.jsn",
+    symlink_target: "/vendor/firmware_mnt/image/modemr.jsn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_modemuw.jsn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/modemuw.jsn",
+    symlink_target: "/vendor/firmware_mnt/image/modemuw.jsn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_wlanmdsp.mbn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/wlanmdsp.mbn",
+    symlink_target: "/vendor/firmware_mnt/image/wlanmdsp.mbn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_adsp.mbn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/adsp.mbn",
+    symlink_target: "/vendor/firmware_gen/adsp.mbn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_cdsp.mbn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/cdsp.mbn",
+    symlink_target: "/vendor/firmware_gen/cdsp.mbn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_modem.mbn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/modem.mbn",
+    symlink_target: "/vendor/firmware_gen/modem.mbn",
+}
+
+install_symlink {
+    name: "symlink_firmware_miatoll_venus.mbn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/venus.mbn",
+    symlink_target: "/vendor/firmware_gen/venus.mbn",
+}
+
+genrule {
+    name: "gen_firmware_miatoll_ipa_fws.mbn",
+    tools: ["pil-squasher"],
+    out: ["ipa_fws.mbn"],
+    cmd: "$(location pil-squasher) $(out) ../../../../../vendor/xiaomi/sm6250-common/proprietary/vendor/firmware/ipa_fws.mdt",
+}
+
+prebuilt_firmware {
+    name: "firmware_miatoll_ipa_fws.mbn",
+    src: ":gen_firmware_miatoll_ipa_fws.mbn",
+    filename_from_src: true,
+    device_specific: true,
+    sub_dir: "qcom/sm7125/miatoll",
+}
+
+// Workaround soong installing device_specific prebuilt_firmware module to /odm/etc/firmware
+install_symlink {
+    name: "symlink_firmware_miatoll_ipa_fws.mbn",
+    device_specific: true,
+    installed_location: "firmware/qcom/sm7125/miatoll/ipa_fws.mbn",
+    symlink_target: "/odm/etc/firmware/qcom/sm7125/miatoll/ipa_fws.mbn",
+}
+
+phony {
+    name: "all_symlink_firmware_miatoll",
+    required: [
+        "symlink_firmware_miatoll",
+        "symlink_firmware_miatoll_adsp.mbn",
+        "symlink_firmware_miatoll_adspr.jsn",
+        "symlink_firmware_miatoll_adsps.jsn",
+        "symlink_firmware_miatoll_adspua.jsn",
+        "symlink_firmware_miatoll_cdsp.mbn",
+        "symlink_firmware_miatoll_cdspr.jsn",
+        "symlink_firmware_miatoll_ipa_fws.mbn",
+        "symlink_firmware_miatoll_modem.mbn",
+        "symlink_firmware_miatoll_modem_pr",
+        "symlink_firmware_miatoll_modemr.jsn",
+        "symlink_firmware_miatoll_modemuw.jsn",
+        "symlink_firmware_miatoll_venus.mbn",
+        "symlink_firmware_miatoll_wlanmdsp.mbn",
+    ],
+}

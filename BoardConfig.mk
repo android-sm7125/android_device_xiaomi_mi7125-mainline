@@ -1,0 +1,89 @@
+#
+# SPDX-FileCopyrightText: The LineageOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+USES_DEVICE_XIAOMI_MI7125_MAINLINE := true
+
+# Inherit from mainline/qcom-common
+include device/mainline/qcom-common/BoardConfigMainlineQcomCommon.mk
+
+# A/B
+AB_OTA_UPDATER := false
+
+# Boot parameters
+BOARD_BOOTCONFIG := \
+    $(MAINLINE_COMMON_ANDROIDBOOT_PARAMS) \
+    $(MAINLINE_QCOM_SOC_ANDROIDBOOT_PARAMS) \
+    androidboot.serialno=meow \
+    androidboot.verifiedbootstate=orange
+
+BOARD_KERNEL_CMDLINE := \
+    $(MAINLINE_COMMON_KERNEL_PARAMS) \
+    $(MAINLINE_QCOM_KERNEL_PARAMS) \
+    console=tty0
+
+BOARD_BOOTCONFIG += androidboot.selinux=permissive
+BOARD_KERNEL_CMDLINE += audit=0
+
+# Bootloader
+BOARD_BOOT_HEADER_VERSION := 4
+BOARD_MKBOOTIMG_ARGS += --header_version $(BOARD_BOOT_HEADER_VERSION)
+
+# Filesystem
+TARGET_USERIMAGES_USE_F2FS := true
+TARGET_USERIMAGES_USE_EXT4 := true
+
+# Kernel
+BOARD_INCLUDE_DTB_IN_BOOTIMG := true
+BOARD_KERNEL_IMAGE_NAME := Image
+TARGET_KERNEL_SOURCE := kernel/xiaomi/mi7125-mainline
+
+TARGET_KERNEL_CONFIG := \
+    defconfig \
+    sm7125.config
+
+TARGET_KERNEL_CONFIG_EXT := \
+    kernel/mainline/configs/fragments/y/arm64/gki_pre.config \
+    kernel/mainline/configs/fragments/y/arm64/gki.config \
+    kernel/mainline/configs/fragments/y/arm64/gki_post.config \
+    kernel/mainline/configs/fragments/y/common.config \
+    kernel/mainline/configs/fragments/y/fbcon.config \
+    kernel/mainline/configs/fragments/n/disable-clang-hardening-features.config \
+    kernel/mainline/configs/fragments/n/faster-build-time.config
+
+ifeq ($(TARGET_DEVICE),miatoll_mainline)
+TARGET_DTB_LIST_WILDCARD := \
+    qcom/sm7125-xiaomi-curtana-huaxing \
+    qcom/sm7125-xiaomi-curtana-tianma \
+    qcom/sm7125-xiaomi-joyeuse-huaxing \
+    qcom/sm7125-xiaomi-joyeuse-tianma
+endif
+
+# Kernel modules
+BOARD_VENDOR_KERNEL_MODULES_LOAD := \
+    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic))
+
+BOARD_RECOVERY_RAMDISK_KERNEL_MODULES_LOAD := \
+    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic))
+RECOVERY_KERNEL_MODULES := \
+    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.include_dep.basic)) \
+    $(strip $(shell cat $(DEVICE_PATH)/modprobe/modules.load.basic))
+
+# Partitions
+BOARD_CACHEIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_USES_METADATA_PARTITION := true
+TARGET_COPY_OUT_VENDOR := vendor
+
+# Platform
+TARGET_BOARD_PLATFORM := mi7125
+
+# Ramdisk
+BOARD_RAMDISK_USE_LZ4 := true
+
+# VINTF
+DEVICE_MANIFEST_FILE := \
+    $(DEVICE_PATH)/vintf/manifest.xml
+
+# Inherit from vendor
+-include vendor/xiaomi/mi7125-mainline/BoardConfigVendor.mk

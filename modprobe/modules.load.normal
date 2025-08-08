@@ -16,6 +16,9 @@ qcom_pd_mapper
 # Sound
 snd-soc-sm8250
 snd-soc-tas2562
+soundwire-qcom
+snd-soc-wcd937x-sdw
+snd-soc-wcd937x
 
 # Sound (DSP)
 # `ls sound/soc/qcom/qdsp6/*.ko|sort`
@@ -33,6 +36,10 @@ q6prm
 q6routing
 snd-q6apm
 snd-q6dsp-common
+snd-soc-lpass-macro-common
+snd-soc-lpass-rx-macro
+snd-soc-lpass-tx-macro
+snd-soc-lpass-va-macro
 
 # Vibrator
 pm8xxx-vibrator

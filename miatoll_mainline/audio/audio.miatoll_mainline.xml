@@ -1,5 +1,10 @@
 <audiohal>
     <mixer card="0">
+		<init>
+            <!-- Speaker -->
+            <ctl name="ASI1 Sel" val="LeftRightDiv2"/>
+            <ctl name="Digital Volume Control" val="109"/>
+        </init>
     </mixer>
     <device name="speaker">
         <path name="on">
